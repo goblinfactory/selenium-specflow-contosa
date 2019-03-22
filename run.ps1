@@ -49,21 +49,14 @@ finally {
 	Pop-Location
 }
 
-#Push-Location -Path .\test\ContosoUniversity.UnitTests
+Push-Location -Path .\ContosoUniversity
 
-#try {
-#	exec { & dotnet test -c Release --no-build }
-#}
-#finally {
-#	Pop-Location
-#}
-
-exec { & dotnet publish ContosoUniversity --output .\..\publish --configuration Release }
-
-$octo_revision = @{ $true = $env:APPVEYOR_BUILD_NUMBER; $false = "0" }[$env:APPVEYOR_BUILD_NUMBER -ne $NULL];
-$octo_version = "1.0.$octo_revision"
-
-exec { & .\tools\Octo.exe pack --id ContosoUniversity --version $octo_version --basePath publish --outFolder artifacts }
+try {
+	exec { & dotnet run port=56789 }
+}
+finally {
+	Pop-Location
+}
 
 
 
